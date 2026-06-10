@@ -307,6 +307,10 @@ export default function Home() {
     }
   };
 
+  const handleGoToMainAdmin = () => {
+    window.location.href = '/admin';
+  };
+
   // Admin login and update logic
   const handleAdminLogin = (e) => {
     e.preventDefault();
@@ -1171,11 +1175,27 @@ export default function Home() {
                 <p style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '12px', textAlign: 'center', lineHeight: '1.4' }}>
                   <strong>Note:</strong> Submitting this form will automatically write and push the updated rates directly to your GitHub repository! Vercel will automatically re-deploy the new rates publicly for all visitors within 20 seconds.
                 </p>
+
+                <div style={{ marginTop: '24px', paddingTop: '24px', borderTop: '1px dashed var(--royal-gold)', textAlign: 'center' }}>
+                  <h4 style={{ color: 'white', marginBottom: '12px', fontSize: '14px', letterSpacing: '2px' }}>HARVEST SCHEME SETTINGS</h4>
+                  <button 
+                    type="button" 
+                    onClick={() => window.location.href = '/admin'} 
+                    className="admin-submit-btn"
+                    style={{ background: 'var(--royal-gold)', color: 'var(--rich-black)', fontWeight: 'bold' }}
+                  >
+                    OPEN HARVEST ADMIN PANEL
+                  </button>
+                  <p style={{ fontSize: '10px', color: 'var(--text-muted)', marginTop: '8px' }}>
+                    (Verify payments, Add manual payments, Upload QR Code)
+                  </p>
+                </div>
+
                 <button 
                   type="button" 
                   onClick={handleAdminLogout} 
                   className="admin-submit-btn"
-                  style={{ background: 'transparent', border: '1px solid var(--royal-gold)', color: 'var(--royal-gold)', marginTop: '8px' }}
+                  style={{ background: 'transparent', border: '1px solid var(--royal-gold)', color: 'var(--royal-gold)', marginTop: '24px' }}
                 >
                   LOG OUT
                 </button>
