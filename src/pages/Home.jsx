@@ -697,7 +697,7 @@ export default function Home() {
               <div className="circle-frame-wrapper" style={{ alignSelf: 'center', marginTop: '10px' }}>
                 <div className="circle-image-container" style={{ width: '180px', height: '180px', borderStyle: 'dashed' }}>
                   <img 
-                    src="/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.00 PM (1).jpeg" 
+                    src="/assets/ZIPEARRINGS/earring-1.jpeg" 
                     alt="Earring highlight"
                     className="circle-image"
                   />
