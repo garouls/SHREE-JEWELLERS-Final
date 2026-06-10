@@ -11,6 +11,7 @@ export default function Dashboard() {
   
   // Payment Modal State
   const [showModal, setShowModal] = useState(false);
+  const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [paymentMethod, setPaymentMethod] = useState('UPI'); // 'UPI' or 'Cash'
   const [screenshotFile, setScreenshotFile] = useState(null);
@@ -67,6 +68,7 @@ export default function Dashboard() {
     setSelectedMonth(monthNumber);
     setPaymentMethod('UPI');
     setScreenshotFile(null);
+    setPaymentSuccess(false);
     setShowModal(true);
   };
 
@@ -114,8 +116,7 @@ export default function Dashboard() {
 
     if (error) alert('Error submitting payment: ' + error.message);
     else {
-      alert("Payment request submitted successfully!");
-      setShowModal(false);
+      setPaymentSuccess(true);
       fetchData();
     }
     setUploading(false);
@@ -229,65 +230,92 @@ export default function Dashboard() {
               <button onClick={() => setShowModal(false)} style={{ background: 'transparent', border: 'none', color: '#888', cursor: 'pointer', fontSize: '1.5rem' }}>&times;</button>
             </div>
             
-            <p style={{ color: '#ccc', marginBottom: '20px' }}>You are paying <strong>₹{scheme.monthly_amount}</strong> for <strong>Month {selectedMonth}</strong>.</p>
             
-            <form onSubmit={submitPayment}>
-              <div style={{ marginBottom: '20px' }}>
-                <label style={{ display: 'block', color: '#888', marginBottom: '10px', fontSize: '0.9rem' }}>Payment Method</label>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <label style={{ flex: 1, padding: '10px', border: `1px solid ${paymentMethod === 'UPI' ? 'var(--royal-gold)' : '#444'}`, textAlign: 'center', cursor: 'pointer', color: paymentMethod === 'UPI' ? 'var(--royal-gold)' : '#fff' }}>
-                    <input type="radio" name="method" value="UPI" checked={paymentMethod === 'UPI'} onChange={() => setPaymentMethod('UPI')} style={{ display: 'none' }} />
-                    UPI / QR Code
-                  </label>
-                  <label style={{ flex: 1, padding: '10px', border: `1px solid ${paymentMethod === 'Cash' ? 'var(--royal-gold)' : '#444'}`, textAlign: 'center', cursor: 'pointer', color: paymentMethod === 'Cash' ? 'var(--royal-gold)' : '#fff' }}>
-                    <input type="radio" name="method" value="Cash" checked={paymentMethod === 'Cash'} onChange={() => setPaymentMethod('Cash')} style={{ display: 'none' }} />
-                    Cash at Store
-                  </label>
+            {!paymentSuccess ? (
+              <>
+                <p style={{ color: '#ccc', marginBottom: '20px' }}>You are paying <strong>₹{scheme.monthly_amount}</strong> for <strong>Month {selectedMonth}</strong>.</p>
+                
+                <form onSubmit={submitPayment}>
+                  <div style={{ marginBottom: '20px' }}>
+                    <label style={{ display: 'block', color: '#888', marginBottom: '10px', fontSize: '0.9rem' }}>Payment Method</label>
+                    <div style={{ display: 'flex', gap: '10px' }}>
+                      <label style={{ flex: 1, padding: '10px', border: `1px solid ${paymentMethod === 'UPI' ? 'var(--royal-gold)' : '#444'}`, textAlign: 'center', cursor: 'pointer', color: paymentMethod === 'UPI' ? 'var(--royal-gold)' : '#fff' }}>
+                        <input type="radio" name="method" value="UPI" checked={paymentMethod === 'UPI'} onChange={() => setPaymentMethod('UPI')} style={{ display: 'none' }} />
+                        UPI / QR Code
+                      </label>
+                      <label style={{ flex: 1, padding: '10px', border: `1px solid ${paymentMethod === 'Cash' ? 'var(--royal-gold)' : '#444'}`, textAlign: 'center', cursor: 'pointer', color: paymentMethod === 'Cash' ? 'var(--royal-gold)' : '#fff' }}>
+                        <input type="radio" name="method" value="Cash" checked={paymentMethod === 'Cash'} onChange={() => setPaymentMethod('Cash')} style={{ display: 'none' }} />
+                        Cash at Store
+                      </label>
+                    </div>
+                  </div>
+
+                  {paymentMethod === 'UPI' && (
+                    <div style={{ background: '#111', padding: '20px', border: '1px solid #333', marginBottom: '20px', textAlign: 'center' }}>
+                      <p style={{ color: '#888', fontSize: '0.9rem', marginBottom: '10px' }}>Please scan the QR or pay to the UPI ID below:</p>
+                      
+                      <div style={{ marginBottom: '20px', padding: '10px', background: '#fff', display: 'inline-block', borderRadius: '4px' }}>
+                        <img 
+                          src={supabase.storage.from('payment_screenshots').getPublicUrl('admin_qr_code.png').data.publicUrl} 
+                          alt="Store QR Code" 
+                          style={{ width: '200px', height: '200px', objectFit: 'contain' }}
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                      </div>
+
+                      <div style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 'bold', marginBottom: '20px', padding: '10px', border: '1px dashed var(--royal-gold)' }}>
+                        UPI ID: {storeUpi}
+                      </div>
+                      
+                      <div style={{ textAlign: 'left' }}>
+                        <label style={{ display: 'block', color: 'var(--royal-gold)', marginBottom: '10px', fontSize: '0.9rem' }}>Upload Payment Screenshot</label>
+                        <input 
+                          type="file" 
+                          accept="image/*" 
+                          onChange={(e) => setScreenshotFile(e.target.files[0])}
+                          style={{ color: '#ccc', width: '100%' }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {paymentMethod === 'Cash' && (
+                    <div style={{ background: '#111', padding: '20px', border: '1px solid #333', marginBottom: '20px', textAlign: 'center' }}>
+                      <p style={{ color: '#ccc', fontSize: '0.9rem' }}>Please visit the store and deposit the cash. Click submit to notify the admin.</p>
+                    </div>
+                  )}
+
+                  <button 
+                    type="submit" 
+                    disabled={uploading}
+                    style={{ width: '100%', padding: '15px', background: 'var(--royal-gold)', color: '#000', border: 'none', fontWeight: 'bold', textTransform: 'uppercase', cursor: uploading ? 'not-allowed' : 'pointer', transition: 'all 0.3s' }}>
+                    {uploading ? 'Submitting...' : 'Submit Payment Request'}
+                  </button>
+                </form>
+              </>
+            ) : (
+              <div style={{ textAlign: 'center', padding: '20px' }}>
+                <div style={{ width: '60px', height: '60px', borderRadius: '50%', background: 'rgba(40,167,69,0.1)', color: '#28a745', fontSize: '30px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 20px' }}>
+                  ✓
                 </div>
+                <h4 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '10px' }}>Payment Submitted!</h4>
+                <p style={{ color: '#aaa', marginBottom: '30px' }}>Your payment request has been sent for admin approval.</p>
+                
+                <a 
+                  href={`https://wa.me/910000000000?text=${encodeURIComponent(`Hello Hardik Jewellers! I have just paid my EMI of ₹${scheme.monthly_amount} for Month ${selectedMonth}. My registered phone number is ${user.phone_number}. Please approve my payment.`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  onClick={() => setShowModal(false)}
+                  style={{ display: 'block', width: '100%', padding: '15px', background: '#25D366', color: '#fff', textDecoration: 'none', fontWeight: 'bold', textTransform: 'uppercase', borderRadius: '2px', marginBottom: '10px', letterSpacing: '1px', transition: 'transform 0.3s' }}>
+                  Notify Admin on WhatsApp
+                </a>
+                <button 
+                  onClick={() => setShowModal(false)}
+                  style={{ width: '100%', padding: '15px', background: 'transparent', color: '#888', border: '1px solid #333', fontWeight: 'bold', textTransform: 'uppercase', cursor: 'pointer' }}>
+                  Close
+                </button>
               </div>
-
-              {paymentMethod === 'UPI' && (
-                <div style={{ background: '#111', padding: '20px', border: '1px solid #333', marginBottom: '20px', textAlign: 'center' }}>
-                  <p style={{ color: '#888', fontSize: '0.9rem', marginBottom: '10px' }}>Please scan the QR or pay to the UPI ID below:</p>
-                  
-                  <div style={{ marginBottom: '20px', padding: '10px', background: '#fff', display: 'inline-block', borderRadius: '4px' }}>
-                    <img 
-                      src={supabase.storage.from('payment_screenshots').getPublicUrl('admin_qr_code.png').data.publicUrl} 
-                      alt="Store QR Code" 
-                      style={{ width: '200px', height: '200px', objectFit: 'contain' }}
-                      onError={(e) => { e.target.style.display = 'none'; }}
-                    />
-                  </div>
-
-                  <div style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 'bold', marginBottom: '20px', padding: '10px', border: '1px dashed var(--royal-gold)' }}>
-                    UPI ID: {storeUpi}
-                  </div>
-                  
-                  <div style={{ textAlign: 'left' }}>
-                    <label style={{ display: 'block', color: 'var(--royal-gold)', marginBottom: '10px', fontSize: '0.9rem' }}>Upload Payment Screenshot</label>
-                    <input 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={(e) => setScreenshotFile(e.target.files[0])}
-                      style={{ color: '#ccc', width: '100%' }}
-                    />
-                  </div>
-                </div>
-              )}
-
-              {paymentMethod === 'Cash' && (
-                <div style={{ background: '#111', padding: '20px', border: '1px solid #333', marginBottom: '20px', textAlign: 'center' }}>
-                  <p style={{ color: '#ccc', fontSize: '0.9rem' }}>Please visit the store and deposit the cash. Click submit to notify the admin.</p>
-                </div>
-              )}
-
-              <button 
-                type="submit" 
-                disabled={uploading}
-                style={{ width: '100%', padding: '15px', background: 'var(--royal-gold)', color: '#000', border: 'none', fontWeight: 'bold', textTransform: 'uppercase', cursor: uploading ? 'not-allowed' : 'pointer' }}>
-                {uploading ? 'Submitting...' : 'Submit Payment Request'}
-              </button>
-            </form>
+            )}
           </div>
         </div>
       )}
