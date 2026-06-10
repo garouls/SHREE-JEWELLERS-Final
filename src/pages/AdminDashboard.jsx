@@ -1,20 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
 
 export default function AdminDashboard() {
   const [passcode, setPasscode] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [payments, setPayments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [storeUpi, setStoreUpi] = useState('');
   const [updatingUpi, setUpdatingUpi] = useState(false);
+  const [qrUploading, setQrUploading] = useState(false);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchData();
+    }
+  }, [isAuthenticated]);
 
   const handleLogin = (e) => {
     e.preventDefault();
-    const envPasscode = import.meta.env.VITE_ADMIN_PASSCODE || 'umang@12';
-    if (passcode === envPasscode || passcode === 'umang@12') {
+    const envPasscode = import.meta.env.VITE_ADMIN_PASSCODE || 'hardik@12';
+    if (passcode === envPasscode || passcode === 'hardik@12') {
       setIsAuthenticated(true);
-      fetchData();
     } else {
       alert('Invalid passcode');
     }
@@ -56,6 +62,26 @@ export default function AdminDashboard() {
     else fetchData();
   };
 
+  const handleQrUpload = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    setQrUploading(true);
+    try {
+      const { error: uploadError } = await supabase.storage
+        .from('payment_screenshots')
+        .upload('admin_qr_code.png', file, { upsert: true, cacheControl: '0' });
+
+      if (uploadError) throw uploadError;
+      alert('QR Code updated successfully!');
+    } catch (err) {
+      console.error(err);
+      alert('Error uploading QR code');
+    } finally {
+      setQrUploading(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#111', padding: '20px' }}>
@@ -89,24 +115,42 @@ export default function AdminDashboard() {
         </div>
         
         {/* Settings Section */}
-        <div style={{ background: '#1a1a1a', padding: '30px', borderRadius: '2px', border: '1px solid #333', marginBottom: '30px' }}>
-          <h3 style={{ color: 'var(--royal-gold)', fontFamily: '"Playfair Display", serif', fontSize: '1.5rem', marginBottom: '15px' }}>Store Settings</h3>
-          <form onSubmit={handleUpiUpdate} style={{ display: 'flex', alignItems: 'flex-end', gap: '15px' }}>
-            <div style={{ flex: 1, maxWidth: '400px' }}>
-              <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Official UPI ID for Payments</label>
+        <div style={{ background: '#1a1a1a', padding: '30px', borderRadius: '2px', border: '1px solid #333', marginBottom: '30px', display: 'flex', flexWrap: 'wrap', gap: '30px' }}>
+          <div style={{ flex: 1, minWidth: '300px' }}>
+            <h3 style={{ color: 'var(--royal-gold)', fontFamily: '"Playfair Display", serif', fontSize: '1.5rem', marginBottom: '15px' }}>Store UPI Setting</h3>
+            <form onSubmit={handleUpiUpdate} style={{ display: 'flex', alignItems: 'flex-end', gap: '15px' }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Official UPI ID for Payments</label>
+                <input 
+                  type="text" 
+                  value={storeUpi}
+                  onChange={(e) => setStoreUpi(e.target.value)}
+                  placeholder="e.g. store@upi"
+                  required
+                  style={{ padding: '12px', width: '100%', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }}
+                />
+              </div>
+              <button type="submit" disabled={updatingUpi} style={{ padding: '12px 25px', background: 'var(--royal-gold)', color: '#000', border: 'none', fontWeight: 'bold', textTransform: 'uppercase', cursor: updatingUpi ? 'not-allowed' : 'pointer' }}>
+                {updatingUpi ? 'Saving...' : 'Save UPI'}
+              </button>
+            </form>
+          </div>
+
+          <div style={{ flex: 1, minWidth: '300px' }}>
+            <h3 style={{ color: 'var(--royal-gold)', fontFamily: '"Playfair Display", serif', fontSize: '1.5rem', marginBottom: '15px' }}>Store QR Code</h3>
+            <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Upload Official Payment QR Code (PNG/JPG)</label>
+            <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
               <input 
-                type="text" 
-                value={storeUpi}
-                onChange={(e) => setStoreUpi(e.target.value)}
-                placeholder="e.g. store@upi"
-                required
-                style={{ padding: '12px', width: '100%', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }}
+                type="file" 
+                accept="image/*"
+                onChange={handleQrUpload}
+                disabled={qrUploading}
+                style={{ color: '#fff', background: '#000', padding: '10px', border: '1px solid #444', flex: 1 }}
               />
+              {qrUploading && <span style={{ color: 'var(--royal-gold)' }}>Uploading...</span>}
             </div>
-            <button type="submit" disabled={updatingUpi} style={{ padding: '12px 25px', background: 'var(--royal-gold)', color: '#000', border: 'none', fontWeight: 'bold', textTransform: 'uppercase', cursor: updatingUpi ? 'not-allowed' : 'pointer' }}>
-              {updatingUpi ? 'Saving...' : 'Save UPI ID'}
-            </button>
-          </form>
+            <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '10px' }}>This QR will be shown to users when they click Pay.</p>
+          </div>
         </div>
 
         {/* Payments Table */}
