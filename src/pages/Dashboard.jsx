@@ -249,6 +249,16 @@ export default function Dashboard() {
               {paymentMethod === 'UPI' && (
                 <div style={{ background: '#111', padding: '20px', border: '1px solid #333', marginBottom: '20px', textAlign: 'center' }}>
                   <p style={{ color: '#888', fontSize: '0.9rem', marginBottom: '10px' }}>Please scan the QR or pay to the UPI ID below:</p>
+                  
+                  <div style={{ marginBottom: '20px', padding: '10px', background: '#fff', display: 'inline-block', borderRadius: '4px' }}>
+                    <img 
+                      src={supabase.storage.from('payment_screenshots').getPublicUrl('admin_qr_code.png').data.publicUrl} 
+                      alt="Store QR Code" 
+                      style={{ width: '200px', height: '200px', objectFit: 'contain' }}
+                      onError={(e) => { e.target.style.display = 'none'; }}
+                    />
+                  </div>
+
                   <div style={{ fontSize: '1.2rem', color: '#fff', fontWeight: 'bold', marginBottom: '20px', padding: '10px', border: '1px dashed var(--royal-gold)' }}>
                     UPI ID: {storeUpi}
                   </div>
