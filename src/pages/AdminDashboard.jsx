@@ -10,6 +10,14 @@ export default function AdminDashboard() {
   const [updatingUpi, setUpdatingUpi] = useState(false);
   const [qrUploading, setQrUploading] = useState(false);
 
+  // Manual Entry State
+  const [usersList, setUsersList] = useState([]);
+  const [manualUser, setManualUser] = useState('');
+  const [manualMonth, setManualMonth] = useState('');
+  const [manualAmount, setManualAmount] = useState('');
+  const [manualMethod, setManualMethod] = useState('Cash');
+  const [manualSubmitting, setManualSubmitting] = useState(false);
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchData();
@@ -44,6 +52,11 @@ export default function AdminDashboard() {
     } else {
       setPayments(data || []);
     }
+
+    // Fetch users for manual entry
+    const { data: usersData } = await supabase.from('custom_users').select('id, full_name, phone_number, email');
+    if (usersData) setUsersList(usersData);
+
     setLoading(false);
   };
 
@@ -80,6 +93,38 @@ export default function AdminDashboard() {
     } finally {
       setQrUploading(false);
     }
+  };
+
+  const handleManualPayment = async (e) => {
+    e.preventDefault();
+    if (!manualUser || !manualMonth || !manualAmount) return;
+    setManualSubmitting(true);
+    
+    const { data: scheme } = await supabase.from('harvest_schemes').select('id').eq('user_id', manualUser).eq('status', 'active').single();
+    if (!scheme) {
+      alert("This user does not have an active scheme.");
+      setManualSubmitting(false);
+      return;
+    }
+
+    const { error } = await supabase.from('payments').insert([{
+      scheme_id: scheme.id,
+      user_id: manualUser,
+      month_number: parseInt(manualMonth),
+      amount: parseFloat(manualAmount),
+      status: 'approved',
+      payment_method: manualMethod
+    }]);
+
+    if (error) alert("Error adding payment: " + error.message);
+    else {
+      alert("Payment added successfully!");
+      setManualUser('');
+      setManualMonth('');
+      setManualAmount('');
+      fetchData();
+    }
+    setManualSubmitting(false);
   };
 
   if (!isAuthenticated) {
@@ -151,6 +196,47 @@ export default function AdminDashboard() {
             </div>
             <p style={{ fontSize: '0.8rem', color: '#666', marginTop: '10px' }}>This QR will be shown to users when they click Pay.</p>
           </div>
+        </div>
+
+        {/* Manual Payment Entry Section */}
+        <div style={{ background: '#1a1a1a', padding: '30px', borderRadius: '2px', border: '1px solid #333', marginBottom: '30px' }}>
+          <h3 style={{ color: 'var(--royal-gold)', fontFamily: '"Playfair Display", serif', fontSize: '1.5rem', marginBottom: '20px' }}>Manual Payment Entry</h3>
+          <form onSubmit={handleManualPayment} style={{ display: 'flex', flexWrap: 'wrap', gap: '20px', alignItems: 'flex-end' }}>
+            <div style={{ flex: '1 1 200px' }}>
+              <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Select Customer</label>
+              <select value={manualUser} onChange={(e) => setManualUser(e.target.value)} required style={{ width: '100%', padding: '12px', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }}>
+                <option value="">-- Choose User --</option>
+                {usersList.map(u => (
+                  <option key={u.id} value={u.id}>{u.full_name || u.email} ({u.phone_number || 'No Phone'})</option>
+                ))}
+              </select>
+            </div>
+            
+            <div style={{ flex: '1 1 100px' }}>
+              <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Month</label>
+              <select value={manualMonth} onChange={(e) => setManualMonth(e.target.value)} required style={{ width: '100%', padding: '12px', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }}>
+                <option value="">--</option>
+                {[...Array(11)].map((_, i) => <option key={i+1} value={i+1}>{i+1}</option>)}
+              </select>
+            </div>
+            
+            <div style={{ flex: '1 1 150px' }}>
+              <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Amount (₹)</label>
+              <input type="number" min="0" value={manualAmount} onChange={(e) => setManualAmount(e.target.value)} required placeholder="e.g. 5000" style={{ width: '100%', padding: '12px', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }} />
+            </div>
+
+            <div style={{ flex: '1 1 150px' }}>
+              <label style={{ display: 'block', color: '#888', marginBottom: '8px', fontSize: '0.9rem' }}>Method</label>
+              <select value={manualMethod} onChange={(e) => setManualMethod(e.target.value)} required style={{ width: '100%', padding: '12px', background: '#000', border: '1px solid #444', color: '#fff', outline: 'none' }}>
+                <option value="Cash">Cash</option>
+                <option value="UPI">UPI</option>
+              </select>
+            </div>
+
+            <button type="submit" disabled={manualSubmitting} style={{ padding: '12px 25px', background: 'var(--royal-gold)', color: '#000', border: 'none', fontWeight: 'bold', textTransform: 'uppercase', cursor: manualSubmitting ? 'not-allowed' : 'pointer', height: '43px' }}>
+              {manualSubmitting ? 'Adding...' : 'Add Payment'}
+            </button>
+          </form>
         </div>
 
         {/* Payments Table */}
