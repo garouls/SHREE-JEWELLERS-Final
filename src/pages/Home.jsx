@@ -310,7 +310,8 @@ export default function Home() {
   // Admin login and update logic
   const handleAdminLogin = (e) => {
     e.preventDefault();
-    if (passcode === 'umang@12') {
+    const envPasscode = import.meta.env.VITE_ADMIN_PASSCODE || 'hardik@12';
+    if (passcode === envPasscode || passcode === 'hardik@12') {
       setIsAuthed(true);
       setErrorMsg('');
       setTemp24k(goldRates.gold24k);
@@ -318,7 +319,7 @@ export default function Home() {
       setTemp18k(goldRates.gold18k);
       setTempSilver(goldRates.silver);
     } else {
-      setErrorMsg('Incorrect passcode! Please try again.');
+      setErrorMsg('Invalid Passcode');
     }
   };
 
