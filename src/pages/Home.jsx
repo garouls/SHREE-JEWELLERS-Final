@@ -9,7 +9,7 @@ import {
 // Banners customized for HARDIK JEWELLERS exact layout using Model Images
 const bannerImages = [
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM.jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm.jpeg',
     pre: 'HARDIK JEWELLERS',
     presents: 'PRSENTS',
     line1: 'A',
@@ -19,7 +19,7 @@ const bannerImages = [
     sub: 'Trusted by over 25,000+ customers in India, we offer exquisite gold jewellery designs and accurate gold rates.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM (1).jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm-1.jpeg',
     pre: 'HARDIK JEWELLERS',
     presents: 'PRSENTS',
     line1: 'THE',
@@ -29,7 +29,7 @@ const bannerImages = [
     sub: 'Exquisite hand-crafted chokers, necklaces, and heavy gold ornaments designed to make your wedding day royal.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.47 PM.jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.47-pm.jpeg',
     pre: 'HARDIK JEWELLERS',
     presents: 'PRSENTS',
     line1: 'AN',
@@ -39,7 +39,7 @@ const bannerImages = [
     sub: 'Every cocktail ring and Polki statement piece is designed to tell a story of pure passion, luxury, and heritage.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.47 PM (1).jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.47-pm-1.jpeg',
     pre: 'HARDIK JEWELLERS',
     presents: 'PRSENTS',
     line1: 'THE',
@@ -54,22 +54,22 @@ const bannerImages = [
 // Models from ZIPMODELS
 const modelImages = [
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM.jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm.jpeg',
     title: 'Traditional Bridal Heritage',
     desc: 'Adorned in heavy gold choker necklaces, signature rings, and classic jumki earrings.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM (1).jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm-1.jpeg',
     title: 'The Modern Queen',
     desc: 'Featuring royal temple jewelry with premium antique polish.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.47 PM.jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.47-pm.jpeg',
     title: 'Festive Grace',
     desc: 'Dressed in gorgeous traditional red attire featuring handcrafted necklaces and gold bangles.'
   },
   {
-    url: '/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.47 PM (1).jpeg',
+    url: '/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.47-pm-1.jpeg',
     title: 'Regal Splendor',
     desc: 'A spectacular showcase of handcarved gold necklaces, intricate kadas, and statement jewelry.'
   }
@@ -79,7 +79,7 @@ const modelImages = [
 const bangleImages = [
   {
     id: 'bangle-1',
-    url: '/assets/ZIPBANGLES/WhatsApp Image 2026-05-25 at 5.13.45 PM.jpeg',
+    url: '/assets/ZIPBANGLES/whatsapp-image-2026-05-25-at-5.13.45-pm.jpeg',
     title: 'Royal Antique Kundan Kada',
     category: 'BANGLES',
     weight: '48.5 Grams',
@@ -87,7 +87,7 @@ const bangleImages = [
   },
   {
     id: 'bangle-2',
-    url: '/assets/ZIPBANGLES/WhatsApp Image 2026-05-25 at 5.13.46 PM.jpeg',
+    url: '/assets/ZIPBANGLES/whatsapp-image-2026-05-25-at-5.13.46-pm.jpeg',
     title: 'Imperial Peacock Filigree Kada',
     category: 'BANGLES',
     weight: '36.2 Grams',
@@ -95,7 +95,7 @@ const bangleImages = [
   },
   {
     id: 'bangle-3',
-    url: '/assets/ZIPBANGLES/WhatsApp Image 2026-05-25 at 5.13.46 PM (1).jpeg',
+    url: '/assets/ZIPBANGLES/whatsapp-image-2026-05-25-at-5.13.46-pm-1.jpeg',
     title: 'Traditional Polki Jadau Bangle Set',
     category: 'BANGLES',
     weight: '54.0 Grams',
@@ -103,7 +103,7 @@ const bangleImages = [
   },
   {
     id: 'bangle-4',
-    url: '/assets/ZIPBANGLES/WhatsApp Image 2026-05-25 at 5.13.46 PM (2).jpeg',
+    url: '/assets/ZIPBANGLES/whatsapp-image-2026-05-25-at-5.13.46-pm-2.jpeg',
     title: 'Luxury Gold-Beaded Kada',
     category: 'BANGLES',
     weight: '42.8 Grams',
@@ -115,7 +115,7 @@ const bangleImages = [
 const earringImages = [
   {
     id: 'earring-1',
-    url: '/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.00 PM.jpeg',
+    url: '/assets/ZIPEARRINGS/earring-3.jpeg',
     title: 'Heritage Royal Jhumka Set',
     category: 'EARRINGS',
     weight: '24.5 Grams',
@@ -123,7 +123,7 @@ const earringImages = [
   },
   {
     id: 'earring-2',
-    url: '/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.00 PM (1).jpeg',
+    url: '/assets/ZIPEARRINGS/earring-1.jpeg',
     title: 'Polki Chandbali Heritage Jhumki',
     category: 'EARRINGS',
     weight: '32.8 Grams',
@@ -131,7 +131,7 @@ const earringImages = [
   },
   {
     id: 'earring-3',
-    url: '/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.00 PM (2).jpeg',
+    url: '/assets/ZIPEARRINGS/earring-2.jpeg',
     title: 'Imperial Heavy Wedding Jhumkas',
     category: 'EARRINGS',
     weight: '41.2 Grams',
@@ -139,7 +139,7 @@ const earringImages = [
   },
   {
     id: 'earring-4',
-    url: '/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.01 PM.jpeg',
+    url: '/assets/ZIPEARRINGS/earring-4.jpeg',
     title: 'Elegant Antique Drop Earrings',
     category: 'EARRINGS',
     weight: '18.6 Grams',
@@ -151,7 +151,7 @@ const earringImages = [
 const mangalsutraImages = [
   {
     id: 'mangal-1',
-    url: '/assets/ZIPMANGALSUTRA/WhatsApp Image 2026-05-25 at 5.17.50 PM.jpeg',
+    url: '/assets/ZIPMANGALSUTRA/whatsapp-image-2026-05-25-at-5.17.50-pm.jpeg',
     title: 'Dazzling Solitaire Diamond Mangalsutra',
     category: 'MANGALSUTRA',
     weight: '18.2 Grams',
@@ -159,7 +159,7 @@ const mangalsutraImages = [
   },
   {
     id: 'mangal-2',
-    url: '/assets/ZIPMANGALSUTRA/WhatsApp Image 2026-05-25 at 5.17.51 PM.jpeg',
+    url: '/assets/ZIPMANGALSUTRA/whatsapp-image-2026-05-25-at-5.17.51-pm.jpeg',
     title: 'Heritage Royal Jadau Mangalsutra',
     category: 'MANGALSUTRA',
     weight: '28.5 Grams',
@@ -167,7 +167,7 @@ const mangalsutraImages = [
   },
   {
     id: 'mangal-3',
-    url: '/assets/ZIPMANGALSUTRA/WhatsApp Image 2026-05-25 at 5.17.52 PM.jpeg',
+    url: '/assets/ZIPMANGALSUTRA/whatsapp-image-2026-05-25-at-5.17.52-pm.jpeg',
     title: 'Classic Traditional Gold Mangalsutra',
     category: 'MANGALSUTRA',
     weight: '22.0 Grams',
@@ -179,7 +179,7 @@ const mangalsutraImages = [
 const ringImages = [
   {
     id: 'ring-1',
-    url: '/assets/ZIPRINGS/WhatsApp Image 2026-05-25 at 5.19.39 PM.jpeg',
+    url: '/assets/ZIPRINGS/whatsapp-image-2026-05-25-at-5.19.39-pm.jpeg',
     title: 'Grand Royal Rajwadi Ring',
     category: 'RINGS',
     weight: '16.5 Grams',
@@ -187,7 +187,7 @@ const ringImages = [
   },
   {
     id: 'ring-2',
-    url: '/assets/ZIPRINGS/WhatsApp Image 2026-05-25 at 5.19.40 PM.jpeg',
+    url: '/assets/ZIPRINGS/whatsapp-image-2026-05-25-at-5.19.40-pm.jpeg',
     title: 'Traditional Polki Jadau Ring',
     category: 'RINGS',
     weight: '14.2 Grams',
@@ -195,7 +195,7 @@ const ringImages = [
   },
   {
     id: 'ring-3',
-    url: '/assets/ZIPRINGS/WhatsApp Image 2026-05-25 at 5.19.40 PM (1).jpeg',
+    url: '/assets/ZIPRINGS/whatsapp-image-2026-05-25-at-5.19.40-pm-1.jpeg',
     title: 'Luxury Kundan Cocktail Ring',
     category: 'RINGS',
     weight: '18.0 Grams',
@@ -203,7 +203,7 @@ const ringImages = [
   },
   {
     id: 'ring-4',
-    url: '/assets/ZIPRINGS/WhatsApp Image 2026-05-25 at 5.19.41 PM.jpeg',
+    url: '/assets/ZIPRINGS/whatsapp-image-2026-05-25-at-5.19.41-pm.jpeg',
     title: 'Dazzling Royal Floral Band',
     category: 'RINGS',
     weight: '11.4 Grams',
@@ -627,7 +627,7 @@ export default function Home() {
                 <div className="polaroid-frame polaroid-left">
                   <div className="polaroid-image-container">
                     <img 
-                      src="/assets/ZIPEARRINGS/WhatsApp Image 2026-05-25 at 5.17.00 PM.jpeg" 
+                      src="/assets/ZIPEARRINGS/earring-3.jpeg" 
                       alt="Heritage Earring Gold Piece"
                       className="polaroid-image"
                     />
@@ -643,7 +643,7 @@ export default function Home() {
               <div className="polaroid-frame polaroid-right">
                 <div className="polaroid-image-container aspect-[3/4]">
                   <img 
-                    src="/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM.jpeg" 
+                    src="/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm.jpeg" 
                     alt="Bridal Heritage Gold Necklace Model"
                     className="polaroid-image"
                   />
@@ -661,7 +661,7 @@ export default function Home() {
                 <div className="ring-glow" />
                 <div className="circle-image-container">
                   <img 
-                    src="/assets/ZIPMODELS/WhatsApp Image 2026-05-25 at 4.50.46 PM (1).jpeg" 
+                    src="/assets/ZIPMODELS/whatsapp-image-2026-05-25-at-4.50.46-pm-1.jpeg" 
                     alt="Royal Traditional Model"
                     className="circle-image"
                   />
@@ -682,7 +682,7 @@ export default function Home() {
               <div className="polaroid-frame polaroid-left">
                 <div className="polaroid-image-container">
                   <img 
-                    src="/assets/ZIPRINGS/WhatsApp Image 2026-05-25 at 5.19.39 PM.jpeg" 
+                    src="/assets/ZIPRINGS/whatsapp-image-2026-05-25-at-5.19.39-pm.jpeg" 
                     alt="Heritage Statement Ring"
                     className="polaroid-image"
                   />
