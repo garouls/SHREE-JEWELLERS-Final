@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { supabase } from '../lib/supabase';
 import { 
   Menu, X, Phone, MapPin, Clock, 
   ShieldCheck, Heart, Award 
@@ -252,22 +253,17 @@ export default function Home() {
   const [temp18k, setTemp18k] = useState(goldRates.gold18k);
   const [tempSilver, setTempSilver] = useState(goldRates.silver);
 
-  // Load public rates from rates.json on startup (with cache-busting timestamp)
+  // Load public rates from Supabase on startup
   useEffect(() => {
-    fetch(`/assets/rates.json?t=${Date.now()}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.gold24k) {
-          const saved = localStorage.getItem('HARDIK_gold_rates');
-          const localData = saved ? JSON.parse(saved) : null;
-          // If no local storage data, or the server file has a newer timestamp than local storage
-          if (!localData || !localData.updatedAt || data.updatedAt > localData.updatedAt) {
-            setGoldRates(data);
-            localStorage.setItem('HARDIK_gold_rates', JSON.stringify(data));
-          }
-        }
-      })
-      .catch(err => console.error("Error fetching live public rates:", err));
+    const fetchRates = async () => {
+      const { data, error } = await supabase.from('hardik_rates').select('*').eq('id', 1).single();
+      if (data && !error) {
+        setGoldRates(data);
+      } else {
+        console.error("Error fetching live public rates:", error);
+      }
+    };
+    fetchRates();
   }, []);
 
   // Auto-advance banner carousel
@@ -341,53 +337,22 @@ export default function Home() {
       gold22k: Number(temp22k),
       gold18k: Number(temp18k),
       silver: Number(tempSilver),
-      lastUpdated: now,
-      updatedAt: Date.now()
+      lastUpdated: now
     };
 
     setGoldRates(newRates);
-    localStorage.setItem('HARDIK_gold_rates', JSON.stringify(newRates));
-
-    // AUTOMATIC GITHUB UPDATE PIPELINE
-    const token = import.meta.env.VITE_GITHUB_TOKEN || ('ghp_' + 'KmkW6KIQPWXTu2hjqrkpG76QuC1rND0pO77P');
-    const repo = 'garouls/SHREE-JEWELLERS-Final';
-    const path = 'public/assets/rates.json';
-    const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
     try {
-      // Step 1: Fetch current file to get the SHA
-      const getRes = await fetch(url, {
-        headers: {
-          'Authorization': `token ${token}`
-        }
-      });
-      const fileData = await getRes.json();
-      const sha = fileData.sha;
-
-      // Step 2: Push the new content
-      const putRes = await fetch(url, {
-        method: 'PUT',
-        headers: {
-          'Authorization': `token ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          message: `Update live rates: 24K Gold ${newRates.gold24k}, 22K Gold ${newRates.gold22k}`,
-          content: btoa(unescape(encodeURIComponent(JSON.stringify(newRates, null, 2)))),
-          sha: sha
-        })
-      });
-
-      if (putRes.ok) {
-        alert('Live Rates updated publicly! GitHub has been updated and Vercel will deploy the changes live in 20 seconds.');
+      const { error } = await supabase.from('hardik_rates').update(newRates).eq('id', 1);
+      if (error) {
+        console.error("Supabase API error:", error);
+        alert('Failed to sync rates to database: ' + error.message);
       } else {
-        const err = await putRes.json();
-        console.error("GitHub API error:", err);
-        alert('Rates saved locally, but failed to sync to GitHub. Check token permissions.');
+        alert('Live Rates updated instantly in the database!');
       }
     } catch (err) {
-      console.error("Network error during GitHub update:", err);
-      alert('Rates saved locally, but failed to sync to GitHub due to a network issue.');
+      console.error("Network error during update:", err);
+      alert('Failed to sync rates to database due to a network issue.');
     }
 
     setIsAdminOpen(false);
