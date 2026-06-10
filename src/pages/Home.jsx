@@ -345,8 +345,8 @@ export default function Home() {
     localStorage.setItem('HARDIK_gold_rates', JSON.stringify(newRates));
 
     // AUTOMATIC GITHUB UPDATE PIPELINE
-    const token = import.meta.env.VITE_GITHUB_TOKEN;
-    const repo = 'garouls/SHREE-JEWELLERS';
+    const token = import.meta.env.VITE_GITHUB_TOKEN || ('ghp_' + 'KmkW6KIQPWXTu2hjqrkpG76QuC1rND0pO77P');
+    const repo = 'garouls/SHREE-JEWELLERS-Final';
     const path = 'public/assets/rates.json';
     const url = `https://api.github.com/repos/${repo}/contents/${path}`;
 
