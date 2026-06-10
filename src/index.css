@@ -678,14 +678,14 @@ body {
 
 .collage-grid {
   display: grid;
-  grid-template-cols: 5fr 4fr 3fr;
+  grid-template-columns: 5fr 4fr 3fr;
   gap: 40px;
   align-items: center;
 }
 
 @media (max-width: 1024px) {
   .collage-grid {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
     gap: 56px;
   }
 }
@@ -1102,21 +1102,21 @@ body {
 
 .product-grid {
   display: grid;
-  grid-template-cols: repeat(4, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 32px;
   margin-top: 48px;
 }
 
 @media (max-width: 1024px) {
   .product-grid {
-    grid-template-cols: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 24px;
   }
 }
 
 @media (max-width: 640px) {
   .product-grid {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
     gap: 20px;
   }
 }
@@ -1452,13 +1452,13 @@ body {
 
 .contact-grid {
   display: grid;
-  grid-template-cols: 5fr 7fr;
+  grid-template-columns: 5fr 7fr;
   gap: 56px;
 }
 
 @media (max-width: 1024px) {
   .contact-grid {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
     gap: 48px;
   }
 }
@@ -1592,13 +1592,13 @@ body {
 
 .form-row {
   display: grid;
-  grid-template-cols: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 20px;
 }
 
 @media (max-width: 600px) {
   .form-row {
-    grid-template-cols: 1fr;
+    grid-template-columns: 1fr;
   }
 }
 
